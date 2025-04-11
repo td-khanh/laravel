@@ -48,8 +48,8 @@
                 <div class="row">
                     <div class="col-lg-7">
                         <div class="float-left">
-                            <p>Phone: +0967468703</p>
-                            <p>email: minhdien678@gmail.com</p>
+                            <p>Phone: +354899722</p>
+                            <p>email: khanhh201102@gmail.com</p>
                         </div>
                     </div>
                     <div class="col-lg-5">

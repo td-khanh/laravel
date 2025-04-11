@@ -2,12 +2,23 @@
 
 namespace App\Models\clients;
 
+use App\Models\admin\Orderdetail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use DB;
 class Ordered extends Model
 {
     use HasFactory;
+    protected $table = 'orderproduct';
+    protected $primaryKey = 'OrderID';
+    public $timestamps = false;
+    public function orderDetails()
+    {
+        return $this->hasMany(Orderdetail::class, 'OrderID');
+    }
+    public function getOrderd(){
+        return DB::table('orderproduct')->orderBy('OrderID', 'desc')->get();
+    }
     //Lấy ra danh sách các đơn hàng đã đặt của customer
     public function getAllOrdered($id_customer)
     {

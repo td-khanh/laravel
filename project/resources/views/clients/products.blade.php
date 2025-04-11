@@ -6,6 +6,15 @@
     alert("Vui lòng thêm sản phẩm vào giỏ hàng!");
 </script>
 @endif
+<style>
+    .product-image {
+    width: 100%; /* full khung */
+    height: 250px; /* hoặc 300px, tuỳ ý */
+    object-fit: cover; /* tự động crop ảnh cho đều */
+    border-radius: 8px; /* bo góc nhẹ nếu muốn */
+}
+
+</style>
 <section class="cat_product_area section_gap">
     <link rel="stylesheet" href="{{ asset('path/to/your/custom.css') }}">
 
@@ -34,7 +43,7 @@
                                 <div class="product-img">
                                     <img class="card-img"
                                         src="{{ asset('assets/admin/img/upload/' . $item->Picture) }}"
-                                        alt="{{ $item->ProductName }}" />
+                                        alt="{{ $item->ProductName }}" class="product-image" />
                                     <div class="p_icon">
                                         <a href="#"><i class="ti-eye"></i></a>
                                         <a href="#"><i class="ti-heart"></i></a>

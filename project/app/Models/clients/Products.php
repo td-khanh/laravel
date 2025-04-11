@@ -2,6 +2,7 @@
 
 namespace App\Models\clients;
 
+use App\Models\admin\Orderdetail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use DB;
@@ -12,9 +13,17 @@ class Products extends Model
     protected $primaryKey = 'ProductID'; // Chỉ định khóa chính là ProductID thay vì id
     protected $table = 'product';
     public $timestamps = false;
+    public function orderDetails()
+    {
+        return $this->hasMany(Orderdetail::class, 'ProductID');
+    }
     public function category()
     {
         return $this->belongsTo(Categories::class, 'CategoryID', 'CategoryID');
+    }
+    public function brand()
+    {
+        return $this->belongsTo(Brands::class, 'BrandID', 'BrandID');
     }
 
     public function getProduct($filters = [], $sorting = null, $perPage = null)
@@ -25,7 +34,6 @@ class Products extends Model
 
         if (!empty($filters)) {
             $getProduct = $getProduct->where($filters);
-
         }
         if (!empty($sorting)) {
             $getProduct = $getProduct->orderBy('product.Price', $sorting);
@@ -49,7 +57,13 @@ class Products extends Model
         $getDetailProduct = DB::table('product')
             ->join('categories', 'product.CategoryID', '=', 'categories.CategoryID')
             ->join('brand', 'product.BrandID', '=', 'brand.BrandID')
-            ->where('ProductID', $id)->first();
+            ->where('ProductID', $id)
+            ->select(
+                'product.*', // Ưu tiên tất cả cột từ product
+                'categories.CategoryName', // nếu cần thêm
+                'brand.BrandName' // nếu cần thêm
+            )
+            ->first();
 
         return $getDetailProduct;
     }
@@ -94,7 +108,6 @@ class Products extends Model
     public function postRating($data)
     {
         return DB::table('rating')->insert($data);
-
     }
     //update sản phẩm sau khi được đặt thành công
     public function updateQuantityProduct($id, $quantity)
@@ -111,7 +124,7 @@ class Products extends Model
         return DB::table('product')
             ->join('categories', 'product.CategoryID', '=', 'categories.CategoryID')
             ->join('brand', 'product.BrandID', '=', 'brand.BrandID')
-            ->select('product.*','categories.CategoryName', 'brand.BrandName')
+            ->select('product.*', 'categories.CategoryName', 'brand.BrandName')
             ->where(function ($query) use ($searchTerm) {
                 $query->where('ProductName', 'like', '%' . $searchTerm . '%')
                     ->orWhere('CategoryName', 'like', '%' . $searchTerm . '%')
@@ -119,5 +132,4 @@ class Products extends Model
             })
             ->paginate(9);
     }
-
 }

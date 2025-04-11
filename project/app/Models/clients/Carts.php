@@ -17,7 +17,7 @@ class Carts extends Model
         $getCarts = DB::table('carts')
             ->join('product', 'product.ProductID', '=', 'carts.ProductID')
             ->where('CustomerID', $id_custormer)
-            ->where('Status', 0)
+            ->where('carts.Status', 0)
             ->get();
 
         // dd(DB::getQueryLog());

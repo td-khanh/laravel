@@ -8,7 +8,7 @@
             <div class="row">
                 <div class="col-lg-8">
                     <h3>Chi tiết thanh toán</h3>
-                    <form class="row contact_form" action="" method="POST" id="form-checkout">
+                    <form class="row contact_form" action="{{ route('checkout.process') }}" method="POST" id="form-checkout">
                         @csrf
                         <div class="col-md-6 form-group p_star">
                             <input type="text" class="form-control" id="name" name="name"
@@ -92,14 +92,13 @@
                         </div>
                         <div class="payment_item">
                             <div class="radion_btn">
-                                <input type="radio" id="f-option6" name="thanhtoan" value="Thanh toán bằng PayPal"
-                                    required />
-                                <label for="f-option6"> PayPal </label>
-                                <img src="{{ asset('assets/clients/img/product/single-product/card.jpg') }}"
-                                    alt="" />
+                                <input type="radio" id="f-option7" name="thanhtoan" value="Thanh toán bằng Momo" required />
+                                <label for="f-option7">Thanh toán bằng Momo</label>
+                                <img src="{{ asset('assets/clients/img/product/single-product/momo.png') }}" alt="" style="height: 30px;" />
                                 <div class="check"></div>
                             </div>
                         </div>
+
                         <button type="submit" class="main_btn" style="margin: auto;margin-top: 10px">Đặt hàng</button>
                     </div>
                 </div>

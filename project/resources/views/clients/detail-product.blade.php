@@ -9,29 +9,42 @@
                 <div class="s_product_img">
                     <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
                         <ol class="carousel-indicators">
+                            @if ($detailProduct && $detailProduct->Picture)
                             <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active">
                                 <img class="img-thunhosize"
                                     src="{{ asset('assets/admin/img/upload/' . $detailProduct->Picture) }}"
                                     alt="{{ $detailProduct->ProductName }}" />
                             </li>
+                            @endif
+
+                            @if ($detailProduct && $detailProduct->Picture2)
                             <li data-target="#carouselExampleIndicators" data-slide-to="1">
                                 <img class="img-thunhosize"
                                     src="{{ asset('assets/admin/img/upload/' . $detailProduct->Picture2) }}"
                                     alt="{{ $detailProduct->ProductName }}" />
                             </li>
+                            @endif
                         </ol>
+
+                        @if ($detailProduct && $detailProduct->Picture)
                         <div class="carousel-inner">
                             <div class="carousel-item active">
-                                <img class="d-block w-100 img-detailproduct"
+                                <img class="d-block w-150 img-detailproduct"
                                     src="{{ asset('assets/admin/img/upload/' . $detailProduct->Picture) }}"
                                     alt="{{ $detailProduct->ProductName }}" />
                             </div>
+                            @if ($detailProduct->Picture2)
                             <div class="carousel-item">
-                                <img class="d-block w-100 img-detailproduct"
+                                <img class="d-block w-150 img-detailproduct"
                                     src="{{ asset('assets/admin/img/upload/' . $detailProduct->Picture2) }}"
                                     alt="{{ $detailProduct->ProductName }}" />
                             </div>
+                            @endif
                         </div>
+                        @else
+                        <p>Product details or images are not available.</p>
+                        @endif
+
                     </div>
                 </div>
             </div>
@@ -158,25 +171,25 @@
                         </div>
                         <div class="review_list">
                             @if (!empty($ratingProduct))
-                                <div id="reviews">
-                                    @foreach ($ratingProduct as $item)
-                                        <div class="review_item">
-                                            <div class="media">
-                                                <div class="d-flex">
-                                                    <img src="{{ asset('assets/clients/img/product/single-product/review-1.png') }}"
-                                                        alt="" />
-                                                </div>
-                                                <div class="media-body">
-                                                    <h4>{{ $item->RatingName }}</h4>
-                                                    @for ($i = 1; $i <= $item->RatingStar; $i++)
-                                                        <i class="fa fa-star"></i>
-                                                    @endfor
-                                                </div>
-                                            </div>
-                                            <p>{{ $item->RatingComment }}</p>
+                            <div id="reviews">
+                                @foreach ($ratingProduct as $item)
+                                <div class="review_item">
+                                    <div class="media">
+                                        <div class="d-flex">
+                                            <img src="{{ asset('assets/clients/img/product/single-product/review-1.png') }}"
+                                                alt="" />
                                         </div>
-                                    @endforeach
+                                        <div class="media-body">
+                                            <h4>{{ $item->RatingName }}</h4>
+                                            @for ($i = 1; $i <= $item->RatingStar; $i++)
+                                                <i class="fa fa-star"></i>
+                                                @endfor
+                                        </div>
+                                    </div>
+                                    <p>{{ $item->RatingComment }}</p>
                                 </div>
+                                @endforeach
+                            </div>
 
                             @endif
                             <div style="text-align: center; margin-top: 20px;margin-bottom: 20px;">
@@ -253,131 +266,131 @@
 </section>
 <!--================End Product Description Area =================-->
 @section('javascript')
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        $('.star').click(function() {
-            var value = $(this).attr('data-value');
-            $('.star').removeClass('active');
-            $('.star').each(function() {
-                if ($(this).attr('data-value') <= value) {
-                    $(this).addClass('active');
-                }
-            });
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $('.star').click(function() {
+        var value = $(this).attr('data-value');
+        $('.star').removeClass('active');
+        $('.star').each(function() {
+            if ($(this).attr('data-value') <= value) {
+                $(this).addClass('active');
+            }
         });
+    });
 
-        $('.star').on('click', function() {
-            var rating = $(this).attr('value');
-            $('#rating').val(rating);
-            $('.star').each(function() {
-                if ($(this).attr('value') <= rating) {
-                    $(this).addClass('selected');
-                } else {
-                    $(this).removeClass('selected');
-                }
-            });
+    $('.star').on('click', function() {
+        var rating = $(this).attr('value');
+        $('#rating').val(rating);
+        $('.star').each(function() {
+            if ($(this).attr('value') <= rating) {
+                $(this).addClass('selected');
+            } else {
+                $(this).removeClass('selected');
+            }
         });
+    });
 
-        $('ul[name="star"] li').on('click', function() {
-            $('ul[name="star"] li').removeClass('active');
-            $(this).addClass('active');
-            $('ul[name="star"]').attr('value', $(this).attr('value'));
-        });
+    $('ul[name="star"] li').on('click', function() {
+        $('ul[name="star"] li').removeClass('active');
+        $(this).addClass('active');
+        $('ul[name="star"]').attr('value', $(this).attr('value'));
+    });
 
 
-        $(document).ready(function() {
-            // lắng nghe sự kiện submit form
-            $('#contactForm').on('submit', function(e) {
-                e.preventDefault(); // ngăn chặn form submit theo cách thông thường
+    $(document).ready(function() {
+        // lắng nghe sự kiện submit form
+        $('#contactForm').on('submit', function(e) {
+            e.preventDefault(); // ngăn chặn form submit theo cách thông thường
 
-                // lấy thông tin form
-                var formData = {
-                    'ratingstar': $('ul[name="star"] li.active').attr('value'),
-                    'name': $('input[name="name"]').val(),
-                    'email': $('input[name="email"]').val(),
-                    'comment': $('textarea[name="comment"]').val(),
-                    '_token': $('input[name="_token"]').val(),
-                };
-                console.log(formData);
-                // gửi ajax request
-                $.ajax({
-                    type: 'POST',
-                    url: $(this).attr('action'),
-                    data: formData,
-                    success: function(response) {
-                        // Xóa nội dung của form
-                        $('#contactForm')[0].reset();
-
-                        // Hiển thị thông báo
-                        $('#message').text('Đánh giá thành công!').show();
-                        $('#error').hide();
-
-                        // Cập nhật lại danh sách đánh giá
-                        $('#reviews').load(location.href + ' #reviews');
-                    },
-                    error: function(xhr, textStatus, errorThrown) {
-                        // Thông báo lỗi
-                        $('#message').hide();
-                        $('#error').text('Đánh giá không thành công!').show();
-                    }
-
-                });
-            });
-        });
-        // Bắt sự kiện click vào các trang của phân trang
-        $(document).on('click', '.pagination a', function(e) {
-            e.preventDefault(); // Ngăn chặn chuyển trang theo cách thông thường
-
-            // Lấy đường dẫn của trang mới
-            var pageUrl = $(this).attr('href');
-
-            // Gửi AJAX request để lấy danh sách đánh giá mới
+            // lấy thông tin form
+            var formData = {
+                'ratingstar': $('ul[name="star"] li.active').attr('value'),
+                'name': $('input[name="name"]').val(),
+                'email': $('input[name="email"]').val(),
+                'comment': $('textarea[name="comment"]').val(),
+                '_token': $('input[name="_token"]').val(),
+            };
+            console.log(formData);
+            // gửi ajax request
             $.ajax({
-                url: pageUrl,
+                type: 'POST',
+                url: $(this).attr('action'),
+                data: formData,
                 success: function(response) {
-                    // Thay thế nội dung của phân trang và danh sách đánh giá cũ bằng nội dung mới nhận được từ server
-                    $('#reviews').html($(response).find('#reviews').html());
-                    $('.pagination').html($(response).find('.pagination').html());
+                    // Xóa nội dung của form
+                    $('#contactForm')[0].reset();
+
+                    // Hiển thị thông báo
+                    $('#message').text('Đánh giá thành công!').show();
+                    $('#error').hide();
+
+                    // Cập nhật lại danh sách đánh giá
+                    $('#reviews').load(location.href + ' #reviews');
                 },
                 error: function(xhr, textStatus, errorThrown) {
                     // Thông báo lỗi
-                    alert('Đã có lỗi xảy ra. Vui lòng thử lại sau!');
+                    $('#message').hide();
+                    $('#error').text('Đánh giá không thành công!').show();
                 }
+
             });
         });
+    });
+    // Bắt sự kiện click vào các trang của phân trang
+    $(document).on('click', '.pagination a', function(e) {
+        e.preventDefault(); // Ngăn chặn chuyển trang theo cách thông thường
 
-        // validation form
-        const contactForm = document.getElementById('contactForm');
-        const nameField = document.getElementById('name');
-        const emailField = document.getElementById('email');
-        const commentField = document.getElementById('comment');
+        // Lấy đường dẫn của trang mới
+        var pageUrl = $(this).attr('href');
 
-        // add required attribute to necessary fields
-        nameField.required = true;
-        emailField.required = true;
-        commentField.required = true;
-
-        // add event listener for form submission
-        contactForm.addEventListener('submit', function(event) {
-            // check if all required fields are filled
-
-            if (!nameField.checkValidity() || !emailField.checkValidity() || !commentField.checkValidity()) {
-                event.preventDefault();
+        // Gửi AJAX request để lấy danh sách đánh giá mới
+        $.ajax({
+            url: pageUrl,
+            success: function(response) {
+                // Thay thế nội dung của phân trang và danh sách đánh giá cũ bằng nội dung mới nhận được từ server
+                $('#reviews').html($(response).find('#reviews').html());
+                $('.pagination').html($(response).find('.pagination').html());
+            },
+            error: function(xhr, textStatus, errorThrown) {
+                // Thông báo lỗi
+                alert('Đã có lỗi xảy ra. Vui lòng thử lại sau!');
             }
         });
-        //không cho số lượng lớn hơn trong giỏ hàng
+    });
 
-        const quantityInput = document.querySelector('input[name="quantity_input"]');
-        const maxQuantity = parseInt(quantityInput.getAttribute('max'));
+    // validation form
+    const contactForm = document.getElementById('contactForm');
+    const nameField = document.getElementById('name');
+    const emailField = document.getElementById('email');
+    const commentField = document.getElementById('comment');
 
-        quantityInput.addEventListener('input', function() {
-            const value = parseInt(quantityInput.value);
+    // add required attribute to necessary fields
+    nameField.required = true;
+    emailField.required = true;
+    commentField.required = true;
 
-            if (value > maxQuantity) {
-                quantityInput.setAttribute('required', 'required');
-            } else {
-                quantityInput.removeAttribute('required');
-            }
-        });
-    </script>
+    // add event listener for form submission
+    contactForm.addEventListener('submit', function(event) {
+        // check if all required fields are filled
+
+        if (!nameField.checkValidity() || !emailField.checkValidity() || !commentField.checkValidity()) {
+            event.preventDefault();
+        }
+    });
+    //không cho số lượng lớn hơn trong giỏ hàng
+
+    const quantityInput = document.querySelector('input[name="quantity_input"]');
+    const maxQuantity = parseInt(quantityInput.getAttribute('max'));
+
+    quantityInput.addEventListener('input', function() {
+        const value = parseInt(quantityInput.value);
+
+        if (value > maxQuantity) {
+            quantityInput.setAttribute('required', 'required');
+        } else {
+            quantityInput.removeAttribute('required');
+        }
+    });
+</script>
 @endsection
 @include('clients.blocks.footer')

@@ -33,15 +33,29 @@
                         @endforeach
                     </select>
                 </div>
+                <div class="mb-4">
+                    <label for="CategoryID" class="form-label fw-bold">Thương hiệu</label>
+                    <select class="form-select rounded-pill px-3" id="BrandID" name="BrandID" required>
+                        <option value="">Chọn thương hiệu</option>
+                        @foreach ($brandes as $brand)
+                        <option value="{{ $brand->BrandID }}">{{ $brand->BrandName }}</option>
+                        @endforeach
+                    </select>
+                </div>
 
                 <div class="mb-4">
                     <label for="Price" class="form-label fw-bold">Giá</label>
-                    <input type="number" class="form-control rounded-pill px-3" id="Price" name="Price" value="{{ old('Price') }}" required>
+                    <input type="number" class="form-control rounded-pill px-3" id="Price" name="Price" value="" required>
                 </div>
                 <div class="mb-4">
-                    <label for="Price" class="form-label fw-bold">Mô tả sản phẩm</label>
-                    <textarea type="number" class="form-control rounded-pill px-3" id="Price" name="Price" value="{{ old('Price') }}" required></textarea>
+                    <label for="Quantity" class="form-label fw-bold">Số lượng</label>
+                    <input type="number" class="form-control rounded-pill px-3" id="Quantity" name="Quantity" value="" required>
                 </div>
+                <div class="mb-4">
+                    <label for="ProductDesc" class="form-label fw-bold">Mô tả sản phẩm</label>
+                    <textarea type="number" class="form-control rounded-pill px-3" id="ProductDesc" name="ProductDesc" value="" required></textarea>
+                </div>
+                
                 <div class="mb-4">
                     <label for="Picture" class="form-label fw-bold">Ảnh Sản Phẩm</label>
                     <div class="mb-4">

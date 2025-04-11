@@ -10,7 +10,13 @@ class Categories extends Model
 {
     use HasFactory;
     protected $primaryKey = 'CategoryID';
+    public $timestamps = false;
     protected $table = 'categories';
+    protected $fillable = [
+        'CategoryName',
+        'Description',
+        'Picture',
+    ];
 
     public function getAll()
     {

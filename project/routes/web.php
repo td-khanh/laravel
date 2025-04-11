@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\admin\AdminOrderdetailController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\clients\InforController;
@@ -16,7 +17,10 @@ use App\Http\Controllers\clients\AboutController;
 
 //Admin
 use App\Http\Controllers\admin\LoginAdminController;
+use App\Http\Controllers\admin\AdminOrderedcontroller;
 use App\Http\Controllers\admin\Productcontroller;
+use App\Http\Controllers\admin\PaymentController;
+use App\Http\Controllers\admin\CategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -62,6 +66,34 @@ Route::prefix('admin')->group(function () {
     Route::put('/product/{id}', [Productcontroller::class, 'update'])->name('admin.product.update');
     Route::delete('/san-pham/xoa/{id}', [ProductController::class, 'destroy'])->name('admin.product.destroy');
     Route::get('/san-pham/tim-kiem', [Productcontroller::class, 'search'])->name('admin.product.search');
+
+
+    Route::get('/don-hang', [AdminOrderedcontroller::class, 'index'])->name('admin.orderd');
+    Route::get('/don-hang/huy', [AdminOrderedcontroller::class, 'destroy'])->name('admin.orderd.destroy');
+    Route::get('/don-hang/momo', [AdminOrderedcontroller::class, 'momolist'])->name('admin.orderd.momo');
+    Route::get('/don-hang/chi-tiet/{id}', [AdminOrderdetailController::class, 'index'])->name('admin.orderdetail');
+    Route::get('/don-hang/chi-tiet/cap-nhat/{id}', [AdminOrderdetailController::class, 'updateStatus'])->name('admin.updateStatus');
+    Route::get('/don-hang/tim-kiem', [AdminOrderedcontroller::class, 'search'])->name('admin.orderd.search');
+    Route::get('/don-hang/don-huy', [AdminOrderedcontroller::class, 'getOrder'])->name('admin.orderd.listreturn');
+
+
+    Route::get('/category', [CategoryController::class, 'index'])->name('category.index');
+    Route::get('/create', [CategoryController::class, 'create'])->name('category.create');
+    Route::post('/store', [CategoryController::class, 'store'])->name('category.store');
+    Route::get('/edit/{id}', [CategoryController::class, 'edit'])->name('category.edit');
+    Route::post('/update/{id}', [CategoryController::class, 'update'])->name('category.update');
+    Route::get('/delete/{id}', [CategoryController::class, 'delete'])->name('category.delete');
+
+    Route::get('/momo/pay/{orderID}', [PaymentController::class, 'payWithMomo'])->name('momo.pay');
+    Route::post('/momo/callback', [PaymentController::class, 'momoCallback'])->name('momo.callback');
+    Route::post('/checkout/process', [PaymentController::class, 'process'])->name('checkout.process');
+    Route::get('/checkout/momo-callback', [PaymentController::class, 'momoCallback'])->name('checkout.momoCallback'); 
+    Route::post('/checkout/momo-callback', [PaymentController::class, 'momoCallback']); 
+
+    Route::get('/admin/momo-transactions', [PaymentController::class, 'index_list'])->name('admin.momo.index');
+
+
+
 
 
     Route::get('/', [LoginAdminController::class, 'index'])->name('admin.login');
