@@ -14,7 +14,6 @@ class PaymentController extends Controller
 {
     public function process(Request $request)
     {
-        // Xử lý lưu thông tin người mua (tuỳ bạn lưu vào bảng nào)
         $name = $request->name;
         $phone = $request->sdt;
         $address = $request->address . ', ' . $request->xaphuong . ', ' . $request->quanhuyen . ', ' . $request->tinhthanhpho;
@@ -22,7 +21,6 @@ class PaymentController extends Controller
         $total = $request->totalPrice;
 
         if ($paymentMethod == 'Thanh toán bằng Momo') {
-            // Gửi sang Momo
             $endpoint = "https://test-payment.momo.vn/v2/gateway/api/create";
             $partnerCode = 'MOMO';
             $accessKey = 'F8BBA842ECF85';
@@ -59,15 +57,12 @@ class PaymentController extends Controller
             if ($response->successful()) {
                 $payUrl = $response->json()['payUrl'];
 
-                // Tùy bạn: lưu đơn hàng ở đây nếu cần
                 return redirect($payUrl);
             } else {
                 return redirect()->back()->with('error', 'Lỗi kết nối tới Momo');
             }
         }
 
-        // Nếu là thanh toán khi nhận hàng
-        // Tạo đơn hàng, lưu database
         return redirect()->route('home')->with('success', 'Đặt hàng thành công!');
     }
     public function momoCallback(Request $request)
